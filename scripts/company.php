@@ -112,12 +112,22 @@
             // Store the Notification ID to update or remove it in other operations
             $this->notificationId = $notificationResponse->id;
         }
-        
+
         /**
-         * @type(string)
-         * @title("Notification ID")
-         */
+        * @type(string)
+        * @title("Notification ID")
+        */
         public $notificationId;
+
+        /**
+        * @verb(GET)
+        * @path("/getTemperature")
+        * @return(string,text)
+        */
+        public function getTemperature(){
+            $response = $this->send_curl_request('GET', $this->application->url . "company/" . $this->company_id);
+            return $response->{'celsius'};
+        }
 
     }
 ?>
