@@ -52,12 +52,9 @@
         */
         public $password;
 
-        // MyWeatherDemo API URL to work with companies
-        const BASE_URL = "http://www.myweatherdemo.com/api/company/";
-
         // you can add your own methods as well, don't forget to make them private
         private function send_curl_request($verb, $url, $payload = ''){
-            $token = "osamwd";
+            $token = $this->application->token;
             $headers = array(
                     'Content-type: application/json',
                     'x-provider-token: '. $token
@@ -86,7 +83,8 @@
                 'city' => $this->account->addressPostal->locality,
                 'name' => $this->account->companyName
             );
-            $response = $this->send_curl_request('POST', self::BASE_URL, $request);
+            $url = $this->application->url . "company/";
+            $response = $this->send_curl_request('POST', $url, $request);
             // need to save company_id in APSC, going to use that later to delete a resource in unprovision()
             // username and password will be used to login to MyWeatherDemo web interface
             $this->company_id = $response->{'id'};
@@ -95,7 +93,7 @@
         }
 
         public function unprovision(){
-            $this->send_curl_request('DELETE', self::BASE_URL . $this->company_id);
+            $this->send_curl_request('DELETE', $this->application->url . "company/" . $this->company_id);
         }
     }
 ?>

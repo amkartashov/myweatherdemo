@@ -10,6 +10,17 @@
         * @link("http://myweatherdemo.com/company/1.0[]")
         */
         public $companies;
-         
+        /**
+         * @type(string)
+         * @title("URL")
+         */
+        public $url;
+              
+        /**
+         * @type(string)
+         * @title("Token")
+         * @encrypted
+         */
+        public $token;         
     }
 ?>
