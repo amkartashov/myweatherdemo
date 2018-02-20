@@ -1,8 +1,8 @@
 define([
   "dojo/_base/declare",
-  "aps/_PopupView",
-  "aps/xhr"
-], function (declare, View, xhr) {
+  "aps/xhr",
+  "aps/_PopupView"
+], function (declare, xhr, View) {
   return declare(View, {
     size: "sm",
     init: function () {
@@ -29,7 +29,4 @@ define([
             method: 'PUT',
             headers: {"Content-Type": "application/json"},
             data: JSON.stringify(newdata)
-      }).then(this.submit);
-      this.submit(); }
-  });
-});
+      }).then(this.submit); }});});

@@ -99,6 +99,25 @@
 	public function configure($new){
             $request = array('username' => $new->username, 'password' => $new->password);
             $this->send_curl_request('PUT', $this->application->url . "company/" . $this->company_id, $request);
+            // Get instance of the Notification Manager:
+            $notificationManager = \APS\NotificationManager::getInstance();
+            // Create Notification structure
+            $notification = new \APS\Notification;
+            $notification->message = new \APS\NotificationMessage("Company update");
+            $notification->details = new \APS\NotificationMessage("Company details were updated");
+            $notification->status = \APS\Notification::ACTIVITY_READY;
+            $notification->packageId = $this->aps->package->id;
+             
+            $notificationResponse = $notificationManager->sendNotification($notification);
+            // Store the Notification ID to update or remove it in other operations
+            $this->notificationId = $notificationResponse->id;
         }
+        
+        /**
+         * @type(string)
+         * @title("Notification ID")
+         */
+        public $notificationId;
+
     }
 ?>
