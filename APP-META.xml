@@ -2,12 +2,18 @@
     <id>http://myweatherdemo.com/</id>
     <name>myweatherdemo</name>
     <version>1.0</version>
-    <release>6</release>
+    <release>9</release>
     <presentation>
       <navigation id="ccp" label="MyWeatherDemo">
         <var name="company" type-id="http://myweatherdemo.com/company/1.0" />
         <plugs-to id="http://www.parallels.com/ccp/2"/>
         <view id="company" label="Company Information" src="ui/company.js"/>
+        <popup id="editcompany" label="Company Settings" src="ui/editcompany.js">
+            <controls>
+                <cancel label="Cancel"/>
+                <submit label="OK"/>
+            </controls>
+        </popup>
       </navigation>
     </presentation>
     <license-agreement>

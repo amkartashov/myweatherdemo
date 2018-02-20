@@ -95,5 +95,10 @@
         public function unprovision(){
             $this->send_curl_request('DELETE', $this->application->url . "company/" . $this->company_id);
         }
+
+	public function configure($new){
+            $request = array('username' => $new->username, 'password' => $new->password);
+            $this->send_curl_request('PUT', $this->application->url . "company/" . $this->company_id, $request);
+        }
     }
 ?>
