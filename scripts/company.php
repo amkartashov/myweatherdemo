@@ -113,6 +113,11 @@
             $this->notificationId = $notificationResponse->id;
         }
 
+        public function retrieve() {
+            $response = $this->send_curl_request('GET', $this->application->url . "company/" . $this->company_id);
+            $this->query_counter->usage = $response->{'weatherCount'};
+        }
+
         /**
         * @type(string)
         * @title("Notification ID")
