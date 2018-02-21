@@ -36,7 +36,7 @@ define([
           [
             ["aps/Toolbar", [
               ["aps/ToolbarButton", {
-                id: "btnCityNew", iconClass: "fa-plus",
+                id: "btnCityNew", iconClass: "fa-plus", autoBusy: false,
                 type: "primary", label: "New",
                 onClick: function() { aps.apsc.gotoView("city-new"); } }]]],
             ["aps/Grid", { id: "citiesGrid", store: cityStore, selectionMode: "multiple",
