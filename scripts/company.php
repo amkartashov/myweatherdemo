@@ -90,6 +90,28 @@
             $this->company_id = $response->{'id'};
             $this->username = $response->{'username'};
             $this->password = $response->{'password'};
+            // preparing a subscription to Changed events type, designating handler as onLocationChange()
+            $sub = new \APS\EventSubscription(\APS\EventSubscription::Changed, "onLocationChange");
+            // we want to track linked core/account resource
+            $sub->source->id=$this->account->aps->id;
+            // getting access to controller conntector and subscribing
+            $apsc = \APS\Request::getController();
+            $apsc->subscribe($this, $sub);
+        }
+
+        /**
+        * @verb(POST)
+        * @path("/onLocationChange")
+        * @param("http://aps-standard.org/types/core/resource/1.0#Notification",body)
+        */
+        public function onLocationChange($event) {
+            // getting updated core/accont resource
+            $apsc = \APS\Request::getController();
+            $account = $apsc->getResource($event->source->id);
+            // sending new city and country
+            $request = array('city' => $account->addressPostal->locality,
+              'country' => $account->addressPostal->countryName);
+            $response = $this->send_curl_request('PUT', $url, $request);
         }
 
         public function unprovision(){
