@@ -111,7 +111,7 @@
             // sending new city and country
             $request = array('city' => $account->addressPostal->locality,
               'country' => $account->addressPostal->countryName);
-            $response = $this->send_curl_request('PUT', $url, $request);
+            $response = $this->send_curl_request('PUT', $this->application->url . "company/" . $this->company_id, $request);
         }
 
         public function unprovision(){
