@@ -2,7 +2,7 @@
     <id>http://myweatherdemo.com/</id>
     <name>myweatherdemo</name>
     <version>1.0</version>
-    <release>18</release>
+    <release>19</release>
     <presentation>
       <navigation id="ccp" label="MyWeatherDemo">
         <var name="company" type-id="http://myweatherdemo.com/company/1.0" />
