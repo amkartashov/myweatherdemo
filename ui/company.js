@@ -4,8 +4,10 @@ define([
   "aps/xhr",
   "dijit/registry",
   "aps/ResourceStore",
-  "dojo/when"
-], function (declare, _View, xhr, registry, Store, when){
+  "dojo/when",
+  "aps/Container",
+  "aps/Button"
+], function (declare, _View, xhr, registry, Store, when, Container, Button){
   return declare(_View, {
     init: function () {
       var cityStore = new Store({
@@ -26,6 +28,30 @@ define([
                  grid.refresh();
                  if (--counter === 0) { registry.byId("btnCityDel").cancel(); }
                }.bind(this)); }); };
+      var statuscell = function(row, status) {
+        // if a resource in aps:provisioning status hasn't been updated
+        // for a long time (25 seconds) this means that the task has failed
+        var T25SECONDS = 25000,
+        last_updated = Date.parse(row.aps.modified),
+        current = Date.now();
+        return (row.aps.status !== "aps:provisioning" || last_updated + T25SECONDS > current) ? status : "Failed"; };
+      var operationscell = function(row) {
+        var con = new Container({});
+        var editButton = new Button({
+          label: "Edit",
+          onClick: function() { aps.apsc.gotoView("city-edit", row.aps.id); }});
+        var deleteButton = new Button({
+          label: "Delete",
+          onClick: function() { cityStore.remove(row.aps.id); }});
+        switch (row.status) {
+        case 'provisioned':
+          con.addChild(editButton);
+          con.addChild(deleteButton);
+          break;
+        case 'country_not_found':
+          con.addChild(deleteButton);
+        }
+        return con; };
       return ["aps/Tiles", [
         ["aps/Tile", {
           id: "mainid", title: "Company",
@@ -58,13 +84,13 @@ define([
                 id: "btnCityDel", iconClass: "fa-trash", type: "danger",
                 label: "Delete", requireItems: true, onClick: remove }]]],
             ["aps/Grid", { id: "citiesGrid", store: cityStore, selectionMode: "multiple",
-                apsResourceViewId: "city-edit",
                 columns: [
                   {field: "city", name: "City", type: "resourceName"},
                   {field: "country", name: "Country", type: "string"},
                   {field: "units", name: "Units", type: "string"},
                   {field: "include_humidity", name: "Get humidity", type: "boolean"},
-                  {field: "status", name: "Status", type: "string"}]}]]]]]; },
+                  {field: "status", name: "Status", renderCell: statuscell},
+                  {field: "operations", name: "Operations", renderCell: operationscell}]}]]]]]; },
     onContext: function() {
       var company = aps.context.vars.company;
       this.byId("nameid").set("value", company.username);
