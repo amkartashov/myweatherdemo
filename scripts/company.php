@@ -57,7 +57,7 @@
             \APS\LoggerRegistry::get()->debug("company.php::REQUEST: " .
               $verb . " " . $path . " " . var_export($payload, true));
             $token = $this->application->token;
-            $url = $this->application->url . $path
+            $url = $this->application->url . $path;
             $headers = array(
                     'Content-type: application/json',
                     'x-provider-token: '. $token
