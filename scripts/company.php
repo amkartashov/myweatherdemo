@@ -54,6 +54,8 @@
 
         // you can add your own methods as well, don't forget to make them private
         private function send_curl_request($verb, $path, $payload = ''){
+            \APS\LoggerRegistry::get()->debug("company.php::REQUEST: " .
+              $verb . " " . $path . " " . var_export($payload, true));
             $token = $this->application->token;
             $url = $this->application->url . $path
             $headers = array(
@@ -73,6 +75,7 @@
             $response = json_decode(curl_exec($ch));
             
             curl_close($ch);
+            \APS\LoggerRegistry::get()->debug("company.php::REPLY: " . var_export($response, true));
             return $response;
         }
 
