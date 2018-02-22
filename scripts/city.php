@@ -90,10 +90,26 @@
             // need to save company_id in APSC, going to use that later to delete a resource in unprovision()
             // username and password will be used to login to MyWeatherDemo web interface
             $this->external_city_id = $response->{'id'};
+
+            $notificationManager = \APS\NotificationManager::getInstance();
+            // Create Notification structure
+            $notification = new \APS\Notification;
+            $notification->message = new \APS\NotificationMessage("City ". $this->city. " created");
+            $notification->status = \APS\Notification::ACTIVITY_READY;
+            $notification->packageId = $this->aps->package->id;
+            $notificationResponse = $notificationManager->sendNotification($notification);
         }
 
         public function unprovision(){
             $this->send_curl_request('DELETE', "watchcity/" . $this->external_city_id);
+
+            $notificationManager = \APS\NotificationManager::getInstance();
+            // Create Notification structure
+            $notification = new \APS\Notification;
+            $notification->message = new \APS\NotificationMessage("City ". $this->city. " deleted");
+            $notification->status = \APS\Notification::ACTIVITY_READY;
+            $notification->packageId = $this->aps->package->id;
+            $notificationResponse = $notificationManager->sendNotification($notification);
         }
 
         public function configure($new){
