@@ -15,3 +15,13 @@ Install
 * create APS instance
 * modify URL and token in APS instance settings
 * create resources, ST and SP
+
+Debug
+=====
+
+For debug, add below lines to the bottom of /usr/share/aps/php/aps/2/runtime.php::
+
+```php
+define('APS_DEVELOPMENT_MODE', true);
+\APS\LoggerRegistry::get()->setLogFile("/var/www/aps-php-runtime/logs/myweatherdemo.log");
+```
