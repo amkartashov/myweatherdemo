@@ -11,6 +11,12 @@
          * @required
          */
         public $company;
+
+        /**
+        * @type(string)
+        * @title("Status")
+        */
+        public $status;
         
         /**
         * @type(string)
@@ -86,18 +92,57 @@
                 'units' => $this->units,
                 'includeHumidity' => $this->include_humidity
             );
-            $response = $this->send_curl_request('POST', "watchcity/", $request);
+            $response = $this->send_curl_request('POST', "watchcityasync/", $request);
             // need to save company_id in APSC, going to use that later to delete a resource in unprovision()
             // username and password will be used to login to MyWeatherDemo web interface
             $this->external_city_id = $response->{'id'};
-
+            $this->status = "provisioning";
             $notificationManager = \APS\NotificationManager::getInstance();
             // Create Notification structure
             $notification = new \APS\Notification;
-            $notification->message = new \APS\NotificationMessage("City ". $this->city. " created");
+            $notification->message = new \APS\NotificationMessage("City ". $this->city. " is creating");
             $notification->status = \APS\Notification::ACTIVITY_READY;
             $notification->packageId = $this->aps->package->id;
             $notificationResponse = $notificationManager->sendNotification($notification);
+            
+            throw new \Rest\Accepted($this, "Creating a city subscription..", 10);
+        }
+
+        public function provisionAsync() {
+            $response = $this->send_curl_request('GET', "watchcityasync/" . $this->external_city_id);
+            $notificationManager = \APS\NotificationManager::getInstance();
+            // Create Notification structure
+            $notification = new \APS\Notification;
+            switch ($response->{'status'}) {
+            case 'provisioning':
+              $notification->message = new \APS\NotificationMessage("City ". $this->city. " is yet to be created");
+              $notification->status = \APS\Notification::ACTIVITY_READY;
+              $notification->packageId = $this->aps->package->id;
+              $notificationResponse = $notificationManager->sendNotification($notification);
+              throw new \Rest\Accepted($this, "Still creating a city subscription..", 5);
+              break;
+            case 'provisioned':
+              $this->status = 'provisioned';
+              $notification->message = new \APS\NotificationMessage("City ". $this->city. " is created");
+              $notification->status = \APS\Notification::ACTIVITY_READY;
+              $notification->packageId = $this->aps->package->id;
+              $notificationResponse = $notificationManager->sendNotification($notification);
+              break;
+            case 'provisioning_failed':
+              $notification->message = new \APS\NotificationMessage("City ". $this->city. " is failed to create");
+              $notification->status = \APS\Notification::ACTIVITY_READY;
+              $notification->packageId = $this->aps->package->id;
+              $notificationResponse = $notificationManager->sendNotification($notification);
+              throw new Exception("Internal Server Error: could not create a subscription to a service, try later");
+              break;
+            case 'country_not_found':
+              $this->status = 'country_not_found';
+              $notification->message = new \APS\NotificationMessage("City ". $this->city. " is created, but country not found");
+              $notification->status = \APS\Notification::ACTIVITY_READY;
+              $notification->packageId = $this->aps->package->id;
+              $notificationResponse = $notificationManager->sendNotification($notification);
+              break;
+            }
         }
 
         public function unprovision(){
