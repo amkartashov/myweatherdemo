@@ -63,7 +63,8 @@ define([
                   {field: "city", name: "City", type: "resourceName"},
                   {field: "country", name: "Country", type: "string"},
                   {field: "units", name: "Units", type: "string"},
-                  {field: "include_humidity", name: "Get humidity", type: "boolean"}]}]]]]]; },
+                  {field: "include_humidity", name: "Get humidity", type: "boolean"},
+                  {field: "status", name: "Status", type: "string"}]}]]]]]; },
     onContext: function() {
       var company = aps.context.vars.company;
       this.byId("nameid").set("value", company.username);
