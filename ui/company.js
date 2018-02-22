@@ -40,6 +40,7 @@ define([
                 type: "primary", label: "New",
                 onClick: function() { aps.apsc.gotoView("city-new"); } }]]],
             ["aps/Grid", { id: "citiesGrid", store: cityStore, selectionMode: "multiple",
+                apsResourceViewId: "city-edit",
                 columns: [
                   {field: "city", name: "City", type: "resourceName"},
                   {field: "country", name: "Country", type: "string"},
