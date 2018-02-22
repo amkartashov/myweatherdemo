@@ -8,7 +8,7 @@ define([
   return declare(_View, {
     init: function () {
       var cityStore = new Store({
-        apsType: "http://myweatherdemo.com/city/1.0",
+        apsType: "http://myweatherdemo.com/city/1.1",
         target: "/aps/2/resources/" });
       
       return ["aps/Tiles", [

@@ -1,6 +1,6 @@
 {
     "aps": {
-        "type": "http://myweatherdemo.com/city/1.0",
+        "type": "http://myweatherdemo.com/city/1.1",
         "subscripion": ""
       },
     "city": "",

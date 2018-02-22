@@ -12,7 +12,7 @@ define([
     return declare(View, {
       init: function () {
         city = getStateful({
-            "aps": { "type": "http://myweatherdemo.com/city/1.0", "subscription": "" },
+            "aps": { "type": "http://myweatherdemo.com/city/1.1", "subscription": "" },
             "city": "", "country": "", "units": "celsius", "include_humidity": false });
         return ["aps/Panel", { title: "New City" }, [
             ["aps/FieldSet", [

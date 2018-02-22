@@ -2,7 +2,7 @@
     <id>http://myweatherdemo.com/</id>
     <name>myweatherdemo</name>
     <version>1.0</version>
-    <release>31</release>
+    <release>32</release>
     <presentation>
       <navigation id="ccp" label="MyWeatherDemo">
         <var name="company" type-id="http://myweatherdemo.com/company/1.0" />
@@ -21,7 +21,7 @@
           </controls>
         </view>
         <view id="city-edit" label="Edit City" src="ui/city-edit.js">
-          <var name="city" type-id="http://myweatherdemo.com/city/1.0"/>
+          <var name="city" type-id="http://myweatherdemo.com/city/1.1"/>
           <controls>
             <cancel/>
             <submit/>

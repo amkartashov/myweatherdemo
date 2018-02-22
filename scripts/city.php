@@ -1,7 +1,7 @@
 <?php
     require "aps/2/runtime.php";
     /**
-    * @type("http://myweatherdemo.com/city/1.0")
+    * @type("http://myweatherdemo.com/city/1.1")
     * @implements("http://aps-standard.org/types/core/resource/1.0")
     */
     class city extends \APS\ResourceBase    
@@ -16,7 +16,6 @@
         * @type(string)
         * @title("City")
         * @description("Name of the city")
-        * @final
         * @required
         */
         public $city;       
@@ -25,7 +24,6 @@
         * @type(string)
         * @title("Country")
         * @description("Country of the city")
-        * @final
         * @required
         */
         public $country;       
@@ -101,6 +99,8 @@
         public function configure($new){
             $request = array(
               'companyid' => $this->company->company_id,
+              'country' => $new->country,
+              'city' => $new->city,
               'units' => $new->units,
               'includeHumidity' => $new->include_humidity);
             $this->send_curl_request('PUT', "watchcity/" . $this->external_city_id, $request);

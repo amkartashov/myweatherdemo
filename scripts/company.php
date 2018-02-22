@@ -17,7 +17,7 @@
         public $users;    
         
         /**
-        * @link("http://myweatherdemo.com/city/1.0[]")
+        * @link("http://myweatherdemo.com/city/1.1[]")
         */
         public $cities;
         
