@@ -3,14 +3,29 @@ define([
   "aps/_View",
   "aps/xhr",
   "dijit/registry",
-  "aps/ResourceStore"
-], function (declare, _View, xhr, registry, Store){
+  "aps/ResourceStore",
+  "dojo/when"
+], function (declare, _View, xhr, registry, Store, when){
   return declare(_View, {
     init: function () {
       var cityStore = new Store({
         apsType: "http://myweatherdemo.com/city/1.1",
         target: "/aps/2/resources/" });
-      
+      var remove = function () {
+        /* Get confirmation from the user for the delete operation */
+        if (!confirm("Are you sure you want delete city?")) { this.cancel(); return; }
+        var grid = registry.byId("citiesGrid");
+        var sel = grid.get("selectionArray");
+        var counter = sel.length;
+        sel.forEach(function (cityID) {
+          /* Remove the city from the APS controller DB */
+          when(cityStore.remove(cityID),
+               /* If success, process the next city until the list is empty */
+               function () {
+                 sel.splice(sel.indexOf(cityID), 1);
+                 grid.refresh();
+                 if (--counter === 0) { registry.byId("btnCityDel").cancel(); }
+               }.bind(this)); }); };
       return ["aps/Tiles", [
         ["aps/Tile", {
           id: "mainid", title: "Company",
@@ -36,9 +51,12 @@ define([
           [
             ["aps/Toolbar", [
               ["aps/ToolbarButton", {
-                id: "btnCityNew", iconClass: "fa-plus", autoBusy: false,
+                id: "btnCityNew", iconClass: "fa-plus",
                 type: "primary", label: "New",
-                onClick: function() { aps.apsc.gotoView("city-new"); } }]]],
+                onClick: function() { aps.apsc.gotoView("city-new"); } }],
+              ["aps/ToolbarButton", {
+                id: "btnCityDel", iconClass: "fa-trash", type: "danger", autoBusy: false,
+                label: "Delete", requireItems: true, onClick: remove }]]],
             ["aps/Grid", { id: "citiesGrid", store: cityStore, selectionMode: "multiple",
                 apsResourceViewId: "city-edit",
                 columns: [
