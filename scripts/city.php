@@ -97,6 +97,7 @@
 
         public function configure($new){
             $request = array(
+              'companyid' => $this->company->company_id,
               'units' => $new->units,
               'includeHumidity' => $new->include_humidity);
             $this->send_curl_request('PUT', "watchcity/" . $this->external_city_id, $request);
