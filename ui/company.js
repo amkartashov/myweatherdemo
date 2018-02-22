@@ -52,10 +52,10 @@ define([
             ["aps/Toolbar", [
               ["aps/ToolbarButton", {
                 id: "btnCityNew", iconClass: "fa-plus",
-                type: "primary", label: "New",
+                type: "primary", label: "New", autoBusy: false,
                 onClick: function() { aps.apsc.gotoView("city-new"); } }],
               ["aps/ToolbarButton", {
-                id: "btnCityDel", iconClass: "fa-trash", type: "danger", autoBusy: false,
+                id: "btnCityDel", iconClass: "fa-trash", type: "danger",
                 label: "Delete", requireItems: true, onClick: remove }]]],
             ["aps/Grid", { id: "citiesGrid", store: cityStore, selectionMode: "multiple",
                 apsResourceViewId: "city-edit",
